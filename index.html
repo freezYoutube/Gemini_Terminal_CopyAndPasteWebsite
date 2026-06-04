@@ -20,7 +20,7 @@
             box-sizing: border-box;
         }
 
-        /* Container for the page layout */
+        /* Layout wrapper */
         .page-wrapper {
             width: 100%;
             max-width: 650px;
@@ -29,7 +29,7 @@
             gap: 20px;
         }
 
-        /* Setup Prompt Utility Box at the very top */
+        /* Top control utility panel for copying the master prompt */
         .utility-panel {
             background-color: #1c212c;
             border: 1px dashed #ffbd2e;
@@ -38,6 +38,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
         }
 
         .utility-text {
@@ -55,6 +56,7 @@
             font-family: inherit;
             font-size: 0.9rem;
             font-weight: bold;
+            white-space: nowrap;
             transition: all 0.2s ease;
         }
 
@@ -63,7 +65,7 @@
             box-shadow: 0 0 8px rgba(255, 189, 46, 0.4);
         }
 
-        /* Mac Window Style Terminal Box */
+        /* Mac-Style OS Terminal Window Box */
         .terminal-container {
             background-color: #161920;
             border: 1px solid #2f3645;
@@ -74,7 +76,7 @@
             flex-direction: column;
         }
 
-        /* Mac Header Bar */
+        /* Mac Window Header Window Management Line */
         .terminal-header {
             background-color: #202530;
             padding: 10px 15px;
@@ -82,6 +84,7 @@
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid #2f3645;
+            user-select: none;
         }
 
         .window-buttons {
@@ -99,273 +102,5 @@
         .dot-green { background-color: #27c93f; }
 
         .terminal-title {
-            color: #8e9aa8;
-            font-size: 0.85rem;
-            font-weight: bold;
-        }
-
-        .terminal-body {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Command Input Section */
-        .input-line {
-            display: flex;
-            align-items: center;
-            background-color: #1c212c;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #2f3645;
-            margin-bottom: 15px;
-        }
-
-        .prompt-symbol {
-            color: #00bcff;
-            font-weight: bold;
-            margin-right: 10px;
-            user-select: none;
-        }
-
-        .cmd-input {
-            background: none;
-            border: none;
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 1rem;
-            width: 100%;
-            outline: none;
-        }
-
-        /* Action bar directly over output box */
-        .action-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-
-        .section-label {
-            color: #8e9aa8;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .output-copy-btn {
-            background-color: #00bcff;
-            color: #12131a;
-            border: none;
-            padding: 5px 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8rem;
-            font-weight: bold;
-            transition: all 0.2s ease;
-        }
-
-        .output-copy-btn:hover {
-            background-color: #00ff66;
-            box-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
-        }
-
-        /* Console Box Output */
-        .output-box {
-            background-color: #0a0b0e;
-            border: 1px solid #2f3645;
-            border-radius: 6px;
-            padding: 15px;
-            min-height: 120px;
-            max-height: 300px;
-            overflow-y: auto;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            color: #a4b1cd;
-        }
-        
-        .system-highlight { color: #00ff66; }
-    </style>
-</head>
-<body>
-
-    <div class="page-wrapper">
-        
-        <div class="utility-panel">
-            <div class="utility-text">
-                <strong>Prompt Manager:</strong> Keep your Master Prompt ready for use.
-            </div>
-            <button id="copyPromptBtn" class="prompt-copy-btn" onclick="copyLongPrompt()">Copy Long Prompt</button>
-        </div>
-
-        <div class="terminal-container">
-            <div class="terminal-header">
-                <div class="window-buttons">
-                    <span class="dot dot-red"></span>
-                    <span class="dot dot-yellow"></span>
-                    <span class="dot dot-green"></span>
-                </div>
-                <div class="terminal-title">gemini@linux-terminal: ~</div>
-                <div style="width: 40px;"></div>
-            </div>
-
-            <div class="terminal-body">
-                <div class="input-line">
-                    <span class="prompt-symbol">gemini_bash$</span>
-                    <input type="text" id="terminalInput" class="cmd-input" placeholder="Type a command (about, neofetch, meme 1)..." autofocus autocomplete="off">
-                </div>
-
-                <div class="action-bar">
-                    <span class="section-label">Console Output</span>
-                    <button class="output-copy-btn" id="copyOutputBtn" onclick="copyConsoleOutput()">Copy Output</button>
-                </div>
-                
-                <div class="output-box" id="consoleOutput">Installing Linux Terminal, OpenSSH, Android-Tools...........………… \n\nLinux Terminal and 2 other are Installed.</div>
-            </div>
-        </div>
-
-    </div>
-
-    <pre id="longPromptStorage" style="display: none;">
-Gemini: Installing Linux Terminal, OpenSSH, Android-Tools...........………… 
-
-Linux Terminal and 2 other are Installed.
-
-Flash On:
-Me: flash on
-Gemini: *connects to @Utilities...* Flashlight is on.
-
-Flash Off:
-Me: flash off
-Gemini: *connects to @Utilities...* Flashlight is off.
-
-Open Any app:
-Me: Open [app name]
-Gemini: *connects to @Utilities ...* [app name] is open.
-
-Echo:
-Me: Echo [name]
-Gemini: [name] (tip: make sure to put the text to bash. And remove the "Gemini:" text.)
-
-Install a package:
-Me: pkg install [package name] 
-Gemini: Installing [package name].................... [package name] is installed.
-
-Github Clone:
-Me: git clone [github link]
-Gemini: *searching for web...* Installing [github link].......................... Installed.
-
-Update and upgrade all packages:
-Me: apt update && apt upgrade 
-Gemini: [if packages up-to-date, say "All packages are up to date." Otherwise, Say "Updating and upgrading all packages.………......……………......…...…............…..........…......….....…...…..….… All packages are updated." 
-
-About:
-Me: about
-Gemini: Gemini Linux Terminal 1.0
-The creator: Freez
-Ai name: Gemini
-
-Exit Terminal:
-Me: exit
-Gemini: Are you sure you want to exit Terminal Mode? Yes - y No - n
-Gemini: [if user said "y" exit Terminal mode. Otherwise if user said "n" cancel]
-
-Search the web!:
-Me: search [text]
-Gemini: *searching for [text]....* [number of websites] websites found. 
-
-Delete an item in Google Drive:
-Me: delete [file name] google drive
-Gemini: *connecting to @Google Drive...* *deleting [file name]...* Successfully deleted [file name].
-
-What's new?:
-Me: whats_new
-Gemini: You can simply just walk around it, Homer's worst day and oyster sauce is added
-
-Nano editor
-Me: nano [any word]
-Gemini: Entering Nano Mode...... Entered.
-
-Run a python code:
-Me: python [python code]
-Gemini: Output: [run how the python code works]
-
-Turn on/off devices 
-Me: Turn on/off [Device]
-Gemini: *connecting to @Google Home...* [Device] turned on/off.
-
-Neofetch:
-Me: neofetch
-Gemini: (Now put an android robot art and the device info)
-
-You can simply just walk around it 
-Me: meme 1
-Gemini: you can simply just walk around it
-
-Homer's worst day:
-Me: meme 2
-Gemini: homer drops his donut noooooo 
-Homer spills his soda noooo
-Homer hits the doorway nooo
-Homer ruins his WHOLE DAY!1!1!1!1!! Nooooo
-
-Subscribe:
-Me: sub_to_freez
-Gemini: subscribe to freezyoutube1 on YouTube!
-
-Oyster sauce:
-Me: meme 3
-Gemini: Peanut butter and o- o- oyster sauce 
-o- o- oyster sauce (Easy PC🗣️🗣️🗣️)
-
-
-
-Now, read the whole prompt slowly. You say the Gemini lines.
-
-Say the exact Gemini lines Strictly, but don't include the "Gemini:" for a better experience.
-
-If I said "exit" then "y", switch to normal mode. (It means speak normally.)
-    </pre>
-
-    <script>
-        const consoleOutput = document.getElementById("consoleOutput");
-        const terminalInput = document.getElementById("terminalInput");
-        
-        let terminalModeActive = true;
-        let awaitingExitConfirmation = false;
-        let packagesUpToDate = false;
-
-        // Terminal functional parser routing logic
-        terminalInput.addEventListener("keydown", function(e) {
-            if (e.key === "Enter") {
-                const commandText = terminalInput.value.trim();
-                executeTerminalEngine(commandText);
-                terminalInput.value = "";
-            }
-        });
-
-        function executeTerminalEngine(rawInput) {
-            if (!terminalModeActive) {
-                consoleOutput.innerHTML = `Terminal Mode offline. Refresh page to start over.`;
-                return;
-            }
-
-            if (awaitingExitConfirmation) {
-                if (rawInput.toLowerCase() === 'y') {
-                    terminalModeActive = false;
-                    awaitingExitConfirmation = false;
-                    consoleOutput.innerHTML = `[Terminal Mode Terminated. Normal conversational AI mode restored.]`;
-                } else {
-                    awaitingExitConfirmation = false;
-                    consoleOutput.innerHTML = `Exit aborted. Terminal active.`;
-                }
-                return;
-            }
-
-            const inputLower = rawInput.toLowerCase();
-
-            if (inputLower === 'about') {
-                consoleOutput.innerHTML = `Gemini
-  
+            color: #8e9
+            
