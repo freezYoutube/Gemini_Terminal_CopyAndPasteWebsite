@@ -29,7 +29,7 @@
             gap: 20px;
         }
 
-        /* Top Panel - Now fully visible with a scrollable preview box */
+        /* Top Panel - Houses the completely open preview box */
         .utility-panel {
             background-color: #1c212c;
             border: 1px solid #2f3645;
@@ -70,21 +70,6 @@
         .prompt-copy-btn:hover {
             background-color: #ffe082;
             box-shadow: 0 0 8px rgba(255, 189, 46, 0.4);
-        }
-
-        /* FULLY VISIBLE PROMPT DISPLAY BOX */
-        .visible-prompt-box {
-            background-color: #0a0b0e;
-            border: 1px solid #2f3645;
-            border-radius: 6px;
-            padding: 12px;
-            height: 150px;
-            overflow-y: auto;
-            color: #a4b1cd;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            white-space: pre-wrap;
-            margin: 0;
         }
 
         /* Mac-Style OS Terminal Window Box */
@@ -219,13 +204,15 @@
 
     <div class="page-wrapper">
         
+        <!-- Top Banner - Explicitly forced to show everything open on screen -->
         <div class="utility-panel">
             <div class="panel-header">
                 <div class="utility-text">Master System Setup Prompt:</div>
                 <button id="copyPromptBtn" class="prompt-copy-btn" onclick="copyLongPrompt()">Copy Long Prompt</button>
             </div>
             
-            <pre id="longPromptStorage" class="visible-prompt-box">
+            <!-- Inline styles forced to override any hidden rules or caches -->
+            <pre id="longPromptStorage" style="display: block !important; visibility: visible !important; background-color: #0a0b0e !important; border: 1px solid #2f3645 !important; border-radius: 6px !important; padding: 12px !important; height: 180px !important; overflow-y: auto !important; color: #a4b1cd !important; font-size: 0.85rem !important; line-height: 1.4 !important; white-space: pre-wrap !important; margin: 0 !important;">
 Gemini: Installing Linux Terminal, OpenSSH, Android-Tools...........………… 
 
 Linux Terminal and 2 other are Installed.
@@ -326,6 +313,7 @@ Say the exact Gemini lines Strictly, but don't include the "Gemini:" for a bette
 If I said "exit" then "y", switch to normal mode. (It means speak normally.)</pre>
         </div>
 
+        <!-- The Interactive Mac UI Terminal Screen Canvas -->
         <div class="terminal-container">
             <div class="terminal-header">
                 <div class="window-buttons">
@@ -338,16 +326,19 @@ If I said "exit" then "y", switch to normal mode. (It means speak normally.)</pr
             </div>
 
             <div class="terminal-body">
+                <!-- Command Bar Field Input Box -->
                 <div class="input-line">
                     <span class="prompt-symbol">gemini_bash$</span>
                     <input type="text" id="terminalInput" class="cmd-input" placeholder="Type a command (about, neofetch, meme 1)..." autofocus autocomplete="off">
                 </div>
 
+                <!-- Action Button Positioning -->
                 <div class="action-bar">
                     <span class="section-label">Console Log Output</span>
                     <button class="output-copy-btn" id="copyOutputBtn" onclick="copyConsoleOutput()">Copy Output</button>
                 </div>
                 
+                <!-- Terminal Initial Boot Display State Area -->
                 <div class="output-box" id="consoleOutput">Installing Linux Terminal, OpenSSH, Android-Tools...........………… 
 
 Linux Terminal and 2 other are Installed.</div>
@@ -411,5 +402,124 @@ Linux Terminal and 2 other are Installed.</div>
             } else if (inputLower === 'flash off') {
                 consoleOutput.innerHTML = `*connects to @Utilities...* Flashlight is off.`;
             } else if (inputLower.startsWith('open ')) {
-                consoleOutput.innerHTML = `*connects to @Utilities ...* ${rawInput.
-        
+                consoleOutput.innerHTML = `*connects to @Utilities ...* ${rawInput.substring(5)} is open.`;
+            } else if (inputLower.startsWith('echo ')) {
+                consoleOutput.innerHTML = `${rawInput.substring(5)}\n\n<span style="color:#ffbd2e;font-size:0.8rem;">(tip: make sure to put the text to bash. And remove the "Gemini:" text.)</span>`;
+            } else if (inputLower.startsWith('pkg install ')) {
+                consoleOutput.innerHTML = `Installing ${rawInput.substring(12)}.................... ${rawInput.substring(12)} is installed.`;
+            } else if (inputLower.startsWith('git clone ')) {
+                consoleOutput.innerHTML = `*searching for web...* Installing ${rawInput.substring(10)}.......................... Installed.`;
+            } else if (inputLower === 'apt update && apt upgrade') {
+                if (packagesUpToDate) {
+                    consoleOutput.innerHTML = `All packages are up to date.`;
+                } else {
+                    consoleOutput.innerHTML = `Updating and upgrading all packages.………......……………......…...…............…..........…......….....…...…..….… All packages are updated.`;
+                    packagesUpToDate = true;
+                }
+            } else if (inputLower === 'exit') {
+                awaitingExitConfirmation = true;
+                consoleOutput.innerHTML = `Are you sure you want to exit Terminal Mode? Yes - y No - n`;
+            } else if (inputLower.startsWith('search ')) {
+                consoleOutput.innerHTML = `*searching for ${rawInput.substring(7)}....* ${Math.floor(Math.random() * 40) + 10} websites found.`;
+            } else if (inputLower.startsWith('delete ') && inputLower.endsWith(' google drive')) {
+                const file = rawInput.substring(7, rawInput.length - 13);
+                consoleOutput.innerHTML = `*connecting to @Google Drive...* *deleting ${file}...* Successfully deleted ${file}.`;
+            } else if (inputLower === 'whats_new') {
+                consoleOutput.innerHTML = `You can simply just walk around it, Homer's worst day and oyster sauce is added`;
+            } else if (inputLower.startsWith('nano ')) {
+                consoleOutput.innerHTML = `Entering Nano Mode...... Entered.`;
+            } else if (inputLower.startsWith('python ')) {
+                consoleOutput.innerHTML = `Output: Script executed successfully framework return: ${rawInput.substring(7)}`;
+            } else if (inputLower.startsWith('turn on ') || inputLower.startsWith('turn off ')) {
+                consoleOutput.innerHTML = `*connecting to @Google Home...* ${rawInput} execution verified.`;
+            } else if (inputLower === 'sub_to_freez') {
+                consoleOutput.innerHTML = `subscribe to freezyoutube1 on YouTube!`;
+            } else if (inputLower === 'meme 1') {
+                consoleOutput.innerHTML = `you can simply just walk around it`;
+            } else if (inputLower === 'meme 2') {
+                consoleOutput.innerHTML = `homer drops his donut noooooo\nhomer spills his soda noooo\nhomer hits the doorway nooo\nhomer ruins his WHOLE DAY!1!1!1!1!! Nooooo`;
+            } else if (inputLower === 'meme 3') {
+                consoleOutput.innerHTML = `Peanut butter and o- o- oyster sauce\no- o- oyster sauce (Easy PC🗣️🗣️🗣️)`;
+            } else {
+                consoleOutput.innerHTML = `bash: command not found: ${rawInput}`;
+            }
+        }
+
+        // COPY LOGIC FOR THE VISIBLE PROMPT
+        function copyLongPrompt() {
+            const storageElement = document.getElementById("longPromptStorage");
+            if (!storageElement) return;
+            const promptText = storageElement.textContent.trim();
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(promptText).then(() => {
+                    updatePromptButtonVisuals();
+                }).catch(err => {
+                    fallbackCopyMethod(promptText, updatePromptButtonVisuals);
+                });
+            } else {
+                fallbackCopyMethod(promptText, updatePromptButtonVisuals);
+            }
+        }
+
+        // COPY LOGIC FOR THE CONSOLE LOG BOX
+        function copyConsoleOutput() {
+            if (!consoleOutput) return;
+            const outputText = consoleOutput.innerText;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(outputText).then(() => {
+                    updateOutputButtonVisuals();
+                }).catch(err => {
+                    fallbackCopyMethod(outputText, updateOutputButtonVisuals);
+                });
+            } else {
+                fallbackCopyMethod(outputText, updateOutputButtonVisuals);
+            }
+        }
+
+        // Fallback clipboard engine
+        function fallbackCopyMethod(text, successCallback) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.top = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful && successCallback) {
+                    successCallback();
+                }
+            } catch (err) {
+                console.error("Copy failed: ", err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function updatePromptButtonVisuals() {
+            const btn = document.getElementById("copyPromptBtn");
+            if (!btn) return;
+            btn.innerText = "Prompt Copied! ✓";
+            btn.style.backgroundColor = "#27c93f";
+            btn.style.color = "#ffffff";
+            setTimeout(() => {
+                btn.innerText = "Copy Long Prompt";
+                btn.style.backgroundColor = "#ffbd2e";
+                btn.style.color = "#12131a";
+            }, 2500);
+        }
+
+        function updateOutputButtonVisuals() {
+            const btn = document.getElementById("copyOutputBtn");
+            if (!btn) return;
+            btn.innerText = "Copied! ✓";
+            btn.style.backgroundColor = "#27c93f";
+            btn.style.color = "#ffffff";
+            setTimeout(() => {
+                btn.innerText = "Copy Output";
+                btn.style.backgroundColor = "#00bcff";
+                btn.style.color = "#12131a";
+  
